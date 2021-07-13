@@ -1,7 +1,12 @@
 <template>
-  <Tutorial/>
+  <Auth />
 </template>
 
 <script>
-export default {}
+import Auth from '~/components/auth/auth.vue'
+export default {
+  components: {
+    Auth,
+  },
+}
 </script>
