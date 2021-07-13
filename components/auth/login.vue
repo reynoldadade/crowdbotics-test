@@ -62,7 +62,7 @@ export default {
     async login(body) {
       this.loading = true
       const response = await this.POST_login(body)
-      if (response.key) {
+      if (response) {
         this.$toastr.s('Login successful')
         this.$cookies.set('token', response.key, {
           path: '/',
@@ -74,8 +74,7 @@ export default {
     async POST_login(body) {
       try {
         const response = await this.$axios.$post('/rest-auth/login/', body)
-
-        return response
+        return response.key
       } catch (error) {
         this.$toastr.e('Failed to login with email and password')
         // console.log(error)
