@@ -13,6 +13,11 @@
             v-model="form.email"
             required
           />
+          <div v-if="error.email" class="text-xs text-red-500">
+            <p v-for="(email, index) in error.email" :key="index">
+              {{ email }}
+            </p>
+          </div>
         </div>
 
         <div class="flex justify-center my-4">
@@ -46,6 +51,9 @@ export default {
         email: '',
       },
       loading: false,
+      error: {
+        email: '',
+      },
     }
   },
   props: {
@@ -69,6 +77,7 @@ export default {
         )
         return response.detail
       } catch ({ response }) {
+        this.error.email = response?.data.email.email
         this.$toastr.e('There was an error in resetting password')
       }
     },
