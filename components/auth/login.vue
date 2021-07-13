@@ -26,6 +26,14 @@
             required
           />
         </div>
+        <div class="my-4 p-1 w-full flex justify-center text-xs">
+          <button
+            class="hover:text-blue-700 text-blue-500"
+            @click.prevent="changeComponent('ForgotPassword')"
+          >
+            Forgot Password?
+          </button>
+        </div>
         <div class="flex justify-center my-4">
           <button
             type="submit"
@@ -59,6 +67,7 @@ export default {
     }
   },
   methods: {
+    //login function used to manage parameters and also handle api response
     async login(body) {
       this.loading = true
       const response = await this.POST_login(body)
@@ -71,6 +80,7 @@ export default {
       }
       this.loading = false
     },
+    //axios request for login
     async POST_login(body) {
       try {
         const response = await this.$axios.$post('/rest-auth/login/', body)

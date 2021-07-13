@@ -22,6 +22,7 @@
 <script>
 import Login from '~/components/auth/login.vue'
 import SignUp from '~/components/auth/signup.vue'
+import ForgotPassword from '~/components/auth/forgotPassword.vue'
 export default {
   data() {
     return {
@@ -31,6 +32,7 @@ export default {
   components: {
     Login,
     SignUp,
+    ForgotPassword,
   },
   methods: {
     changeComponent(component) {
