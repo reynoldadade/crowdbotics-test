@@ -6,11 +6,11 @@ let defaultHeaders = {
 export default function ({ app, $axios }) {
   $axios.onRequest((req) => {
     const { headers } = req
-    const token = app.$cookies.get('access_token')
+    const token = app.$cookies.get('token')
     if (token) {
       defaultHeaders = {
         ...defaultHeaders,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Token ${token}`,
       }
       headers.common = { ...headers.common, ...defaultHeaders }
     }

@@ -73,11 +73,13 @@ export default {
       const response = await this.POST_login(body)
       if (response) {
         this.$toastr.s('Login successful')
-        this.$cookies.set('token', response.key, {
+        this.$cookies.set('token', response, {
           path: '/',
           maxAge: 60 * 60 * 24 * 7,
         })
+        this.$router.push('/dashboard')
       }
+
       this.loading = false
     },
     //axios request for login
