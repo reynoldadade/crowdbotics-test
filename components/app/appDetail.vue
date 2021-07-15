@@ -31,6 +31,15 @@
       :timeAgo="timeAgo"
       :changeCurrentComponent="changeCurrentComponent"
     />
+    <div class="w-full p-2">
+      <button
+        class="p-2 bg-red-500 text-white hover:bg-red-300 rounded"
+        type="button"
+        @click.prevent="deleteApp(app.id)"
+      >
+        Delete App
+      </button>
+    </div>
 
     <!-- <overlay :showOverlay="showPlan">
       <div class="w-full h-full p-2 md:h-2/3 md:w-2/3">
@@ -72,6 +81,40 @@ export default {
     },
     changeCurrentComponent(component) {
       this.currentComponent = component
+    },
+    deleteApp(id) {
+      this.$swal
+        .fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!',
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await this.DELETE_deleteAppById(id)
+            if (response) {
+              this.$swal.fire(
+                'Deleted!',
+                'Your App has been deleted.',
+                'success'
+              )
+              this.$router.push('/dashboard')
+            }
+          }
+        })
+    },
+    async DELETE_deleteAppById(id) {
+      try {
+        await this.$axios.$delete(`api/v1/apps/${id}/`)
+        return true
+      } catch (error) {
+        return false
+        console.log(error.response)
+      }
     },
   },
 }
