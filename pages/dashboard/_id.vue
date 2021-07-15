@@ -39,6 +39,31 @@ export default {
       }
       return '-'
     },
+    async PATCH_app(body, id) {
+      try {
+        const response = await this.$axios.$patch(`api/v1/apps/${id}`, body)
+        return response
+      } catch (error) {
+        console.log(error.response)
+      }
+    },
+    async updateApp(form, id) {
+      const response = await this.PATCH_app(form, id)
+      if (response) {
+        this.app = response
+        return this.$swal.fire(
+          'Updated!',
+          'Your App has been updated successfully.',
+          'success'
+        )
+      }
+      return this.$swal.fire('Sorry!', 'Failed to update app.', 'error')
+    },
+  },
+  provide() {
+    return {
+      updateApp: this.updateApp,
+    }
   },
 }
 </script>

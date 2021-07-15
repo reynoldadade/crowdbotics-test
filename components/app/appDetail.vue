@@ -31,6 +31,7 @@
       :timeAgo="timeAgo"
       :changeCurrentComponent="changeCurrentComponent"
     />
+    <hr />
     <div class="w-full p-2">
       <button
         class="p-2 bg-red-500 text-white hover:bg-red-300 rounded"

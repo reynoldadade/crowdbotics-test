@@ -1,5 +1,14 @@
 <template>
   <div class="w-full">
+    <div class="p-2 flex justify-end w-full">
+      <button
+        type="button"
+        class="hover:text-blue-500"
+        @click.prevent="openCreateAppForm"
+      >
+        <span><i class="fas fa-edit fa-2x"></i></span>
+      </button>
+    </div>
     <div>
       <labels> Description </labels>
 
@@ -49,11 +58,23 @@
         {{ timeAgo(app.updated_at) }}
       </div>
     </div>
+
+    <Overlay :showOverlay="showOverlay">
+      <div class="md:h-3/4 md:w-3/4 h-full w-full md:p-4 p-1">
+        <CreateApp
+          :closeForm="openCreateAppForm"
+          :createApp="editApp"
+          :appData="app"
+        />
+      </div>
+    </Overlay>
   </div>
 </template>
 
 <script>
 import Labels from '~/components/common/labels.vue'
+import Overlay from '~/components/common/overlay.vue'
+import CreateApp from '~/components/app/createApp.vue'
 export default {
   props: {
     app: Object,
@@ -62,7 +83,24 @@ export default {
   },
   components: {
     Labels,
+    Overlay,
+    CreateApp,
   },
+  data() {
+    return {
+      showOverlay: false,
+    }
+  },
+  methods: {
+    openCreateAppForm() {
+      this.showOverlay = !this.showOverlay
+    },
+    async editApp(form) {
+      await this.updateApp(form, this.app.id)
+      this.openCreateAppForm()
+    },
+  },
+  inject: ['updateApp'],
 }
 </script>
 

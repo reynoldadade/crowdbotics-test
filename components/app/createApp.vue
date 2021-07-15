@@ -102,6 +102,20 @@ export default {
   props: {
     closeForm: Function,
     createApp: Function,
+    appData: {
+      default: {},
+      type: Object,
+      required: false,
+    },
+  },
+  mounted() {
+    if (Object.keys(this.appData).length > 0) {
+      this.form.domain_name = this.appData.domain_name
+      this.form.description = this.appData.description
+      this.form.type = this.appData.type
+      this.form.framework = this.appData.framework
+      this.form.name = this.appData.name
+    }
   },
 }
 </script>
