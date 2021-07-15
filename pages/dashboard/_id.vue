@@ -29,7 +29,7 @@ export default {
   methods: {
     timeAgo(date) {
       if (date) {
-        return moment(date, 'YYYYMMDD').fromNow()
+        return moment(date).calendar()
       }
       return '-'
     },

@@ -22,7 +22,7 @@
     <div>
       <labels> domain name </labels>
       <div class="p-2">
-        {{ app.domain_name }}
+        {{ app.domain_name ? app.domain_name : '-' }}
       </div>
     </div>
     <div>
