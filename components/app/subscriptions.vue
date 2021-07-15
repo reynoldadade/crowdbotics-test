@@ -69,10 +69,52 @@ export default {
         console.log(error.response)
       }
     },
+    async POST_plan(body) {
+      try {
+        const response = await this.$axios.$post(`api/v1/subscriptions/`, body)
+        return response
+      } catch (error) {
+        console.log(error.response)
+      }
+    },
+    async subscribeToPlan(planId, appId) {
+      const body = {
+        plan: planId,
+        app: appId,
+        active: true,
+      }
+
+      this.$swal
+        .fire({
+          title: 'Are you subscribing to a plan?',
+          text: 'The subscription will be active immediately!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, subscribe!',
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await this.POST_plan(body)
+            if (response) {
+              this.subscription = response
+              this.$swal.fire(
+                'Subscribed!',
+                'Your subscription is now active.',
+                'success'
+              )
+            } else {
+              this.$swal.fire('Sorry!', 'Subscription failed.', 'error')
+            }
+          }
+        })
+    },
   },
   provide() {
     return {
       changeCurrentPlan: this.changeCurrentPlan,
+      subscribeToPlan: this.subscribeToPlan,
     }
   },
 }
