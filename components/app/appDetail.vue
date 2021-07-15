@@ -11,59 +11,33 @@
         </div>
       </div>
     </div>
-    <div>
-      <labels> Description </labels>
+    <div class="grid grid-cols-2">
+      <button
+        v-for="button in buttons"
+        :key="button.name"
+        class="p-1"
+        :class="{
+          'bg-gray-100 border-b-2 border-blue-500 font-bold':
+            button.name.toLowerCase() === currentComponent.toLowerCase(),
+        }"
+        @click="changeCurrentComponent(button.name)"
+      >
+        {{ button.description }}
+      </button>
+    </div>
+    <Component :is="currentComponent" :app="app" :timeAgo="timeAgo" />
 
-      <div class="p-2">
-        {{ app.description }}
+    <!-- <overlay :showOverlay="showPlan">
+      <div class="w-full h-full p-2 md:h-2/3 md:w-2/3">
+        <ChangePlan :closeAvailablePlan="showAvailablePlans" />
       </div>
-    </div>
-    <div>
-      <labels> Framework </labels>
-      <div class="p-2">
-        {{ app.framework }}
-      </div>
-    </div>
-    <div>
-      <labels> type </labels>
-      <div class="p-2">
-        {{ app.type }}
-      </div>
-    </div>
-    <div>
-      <labels> domain name </labels>
-      <div class="p-2">
-        {{ app.domain_name }}
-      </div>
-    </div>
-    <div>
-      <labels> subscription </labels>
-      <div class="flex justify-between">
-        <div class="p-2">
-          {{ app.subscription ? app.subscription : 'NONE' }}
-        </div>
-        <div class="p-2">
-          <button class="text-blue-500 text-xs">
-            {{ app.subscription ? 'Change your current plan' : 'Add a plan' }}
-          </button>
-        </div>
-      </div>
-    </div>
-    <div>
-      <labels> screenshot </labels>
-      <div class="p-2">{{ app.screenshot ? app.screenshot : 'NONE' }}</div>
-    </div>
-    <div>
-      <labels> Last updated </labels>
-      <div class="p-2">
-        {{ timeAgo(app.updated_at) }}
-      </div>
-    </div>
+    </overlay> -->
   </div>
 </template>
 
 <script>
-import Labels from '~/components/common/labels.vue'
+import Details from '~/components/app/details.vue'
+import Subscriptions from '~/components/app/subscriptions.vue'
 export default {
   props: {
     app: {
@@ -73,7 +47,26 @@ export default {
     formattedDate: Function,
   },
   components: {
-    Labels,
+    Details,
+    Subscriptions,
+  },
+  data() {
+    return {
+      showPlan: false,
+      currentComponent: 'Details',
+      buttons: [
+        { name: 'Details', description: 'App Details' },
+        { name: 'Subscriptions', description: 'Manage Subscriptions' },
+      ],
+    }
+  },
+  methods: {
+    showAvailablePlans() {
+      this.showPlan = !this.showPlan
+    },
+    changeCurrentComponent(component) {
+      this.currentComponent = component
+    },
   },
 }
 </script>
