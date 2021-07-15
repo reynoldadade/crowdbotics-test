@@ -25,7 +25,12 @@
         {{ button.description }}
       </button>
     </div>
-    <Component :is="currentComponent" :app="app" :timeAgo="timeAgo" />
+    <Component
+      :is="currentComponent"
+      :app="app"
+      :timeAgo="timeAgo"
+      :changeCurrentComponent="changeCurrentComponent"
+    />
 
     <!-- <overlay :showOverlay="showPlan">
       <div class="w-full h-full p-2 md:h-2/3 md:w-2/3">
@@ -46,6 +51,7 @@ export default {
     timeAgo: Function,
     formattedDate: Function,
   },
+  //details and subscriptions have been split because it requires an api call to associate an subscription to a user
   components: {
     Details,
     Subscriptions,

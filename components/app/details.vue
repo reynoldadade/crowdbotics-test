@@ -29,15 +29,12 @@
       <labels> subscription </labels>
       <div class="flex justify-between">
         <div class="p-2">
-          {{ app.subscription ? app.subscription : 'NONE' }}
-        </div>
-        <div class="p-2">
           <button
             type="button"
             class="text-blue-500 text-xs"
-            @click.prevent="showAvailablePlans"
+            @click.prevent="changeCurrentComponent('Subscriptions')"
           >
-            {{ app.subscription ? 'Change your current plan' : 'Add a plan' }}
+            {{ app.subscription ? 'View your plan' : 'Subscribe to a plan' }}
           </button>
         </div>
       </div>
@@ -61,6 +58,7 @@ export default {
   props: {
     app: Object,
     timeAgo: Function,
+    changeCurrentComponent: Function,
   },
   components: {
     Labels,
