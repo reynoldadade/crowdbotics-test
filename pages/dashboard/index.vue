@@ -23,6 +23,7 @@
 import AppList from '~/components/app/appList.vue'
 import Overlay from '~/components/common/overlay.vue'
 import CreateApp from '~/components/app/createApp.vue'
+import { mapActions } from 'vuex'
 export default {
   layout: 'main',
   components: {
@@ -42,6 +43,9 @@ export default {
     this.callAppList()
   },
   methods: {
+    ...mapActions({
+      setLoader: 'component/setLoader',
+    }),
     async GET_apps() {
       try {
         const response = await this.$axios.$get('/api/v1/apps/')
@@ -63,9 +67,11 @@ export default {
       this.showOverlay = !this.showOverlay
     },
     async createApp(form) {
+      this.setLoader(true)
       const response = await this.POST_createApp(form)
       if (response) {
         this.apps = [...this.apps, response]
+        this.setLoader(false)
         this.$swal.fire(
           'Success?',
           'App has been successfully created',
@@ -74,6 +80,7 @@ export default {
         this.showOverlay = false
       } else {
         this.$swal.fire('Sorry', 'Failed to create app', 'error')
+        this.setLoader(false)
       }
     },
     async POST_createApp(body) {

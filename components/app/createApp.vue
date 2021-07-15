@@ -103,7 +103,9 @@ export default {
     closeForm: Function,
     createApp: Function,
     appData: {
-      default: {},
+      default: function () {
+        return {}
+      },
       type: Object,
       required: false,
     },

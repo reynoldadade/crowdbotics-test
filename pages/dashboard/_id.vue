@@ -5,6 +5,8 @@
 <script>
 import AppDetail from '~/components/app/appDetail.vue'
 import moment from 'moment'
+import { mapActions } from 'vuex'
+
 export default {
   async asyncData({ $axios, params }) {
     const { id } = params
@@ -27,6 +29,9 @@ export default {
     AppDetail,
   },
   methods: {
+    ...mapActions({
+      setLoader: 'component/setLoader',
+    }),
     timeAgo(date) {
       if (date) {
         return moment(date).calendar()
@@ -48,16 +53,20 @@ export default {
       }
     },
     async updateApp(form, id) {
+      this.setLoader(true)
       const response = await this.PATCH_app(form, id)
+
       if (response) {
         this.app = response
+        this.setLoader(false)
         return this.$swal.fire(
           'Updated!',
           'Your App has been updated successfully.',
           'success'
         )
       }
-      return this.$swal.fire('Sorry!', 'Failed to update app.', 'error')
+      this.$swal.fire('Sorry!', 'Failed to update app.', 'error')
+      return this.setLoader(false)
     },
   },
   provide() {
