@@ -11,7 +11,7 @@ export default {
   components: {
     Header,
   },
-  middleware: ['plans'],
+  middleware: ['getUser', 'plans'],
 }
 </script>
 

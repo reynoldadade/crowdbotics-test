@@ -26,7 +26,17 @@
             required
           />
         </div>
-        <div class="my-4 p-1 w-full flex justify-center text-xs">
+        <div class="my-4 p-1 w-full flex justify-between text-xs items-center">
+          <div>
+            <label for="loggedIn" class="p-1">Keep me logged in</label>
+            <input
+              type="checkbox"
+              name="loggedIn"
+              id="loggedIn"
+              v-model="keepLoggedIn"
+              class="p-1"
+            />
+          </div>
           <button
             class="hover:text-blue-700 text-blue-500"
             @click.prevent="changeComponent('ForgotPassword')"
@@ -37,7 +47,7 @@
         <div class="flex justify-center my-4">
           <button
             type="submit"
-            class="w-2/3 rounded-full bg-blue-500 text-white p-2 rounded-full"
+            class="w-2/3 bg-blue-500 text-white p-2 rounded-full"
           >
             Login
             <span v-if="loading"><i class="fas fa-spinner fa-spin"></i></span>
@@ -64,6 +74,7 @@ export default {
     return {
       form: { email: '', password: '' },
       loading: false,
+      keepLoggedIn: false,
     }
   },
   methods: {
@@ -73,10 +84,16 @@ export default {
       const response = await this.POST_login(body)
       if (response) {
         this.$toastr.s('Login successful')
-        this.$cookies.set('token', response, {
-          path: '/',
-          maxAge: 60 * 60 * 24 * 7,
-        })
+        if (this.keepLoggedIn) {
+          this.$cookies.set('token', response, {
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+          })
+        } else {
+          this.$cookies.set('token', response, {
+            path: '/',
+          })
+        }
         this.$router.push('/dashboard')
       }
 
