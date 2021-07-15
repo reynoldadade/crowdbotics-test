@@ -7,7 +7,11 @@
       </div>
     </div>
     <div v-else>
-      <div v-for="app in apps" :key="app.id" class="w-full">
+      <div
+        v-for="app in apps"
+        :key="app.id"
+        class="w-full grid grid-cols-1 md:grid-cols-3"
+      >
         <AppItem :app="app" />
       </div>
       <div v-if="apps.length === 0" class="w-full text-centered">
