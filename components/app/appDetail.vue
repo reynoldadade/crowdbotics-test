@@ -53,6 +53,7 @@
 <script>
 import Details from '~/components/app/details.vue'
 import Subscriptions from '~/components/app/subscriptions.vue'
+import { mapActions } from 'vuex'
 export default {
   props: {
     app: {
@@ -77,12 +78,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setLoader: 'component/setLoader',
+    }),
     showAvailablePlans() {
       this.showPlan = !this.showPlan
     },
     changeCurrentComponent(component) {
       this.currentComponent = component
     },
+    //delete app function
     deleteApp(id) {
       this.$swal
         .fire({
@@ -96,7 +101,9 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
+            this.setLoader(true)
             const response = await this.DELETE_deleteAppById(id)
+            this.setLoader(false)
             if (response) {
               this.$swal.fire(
                 'Deleted!',
@@ -104,6 +111,8 @@ export default {
                 'success'
               )
               this.$router.push('/dashboard')
+            } else {
+              this.$swal.fire('Sorry', 'Failed to delete app', 'error')
             }
           }
         })
