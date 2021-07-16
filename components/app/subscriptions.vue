@@ -13,6 +13,7 @@
 
 <script>
 import Plans from '~/components/common/changePlan.vue'
+import { mapActions } from 'vuex'
 export default {
   props: {
     app: Object,
