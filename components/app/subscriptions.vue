@@ -34,6 +34,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setLoader: 'component/setLoader',
+    }),
     async GET_subscriptionByID(id) {
       try {
         const response = await this.$axios.$get(`api/v1/subscriptions/${id}/`)
@@ -51,8 +54,10 @@ export default {
       this.loading = false
     },
     async changeCurrentPlan(planId, appId, active = true, subscriptionId) {
+      this.setLoader(true)
       const body = { plan: planId, app: appId, active }
       const response = await this.PATCH_currentPlan(body, subscriptionId)
+      this.setLoader(false)
       if (response) {
         this.subscription = response
         return true
@@ -97,7 +102,9 @@ export default {
         })
         .then(async (result) => {
           if (result.isConfirmed) {
+            this.setLoader(true)
             const response = await this.POST_plan(body)
+            this.setLoader(false)
             if (response) {
               this.subscription = response
               this.$swal.fire(

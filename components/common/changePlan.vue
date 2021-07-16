@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
@@ -97,7 +97,6 @@ export default {
   },
   inject: ['changeCurrentPlan', 'subscribeToPlan'],
   methods: {
-    addAPlan() {},
     changePlan(planId, appId, active, subscriptionId) {
       this.$swal
         .fire({
