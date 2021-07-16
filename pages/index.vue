@@ -8,5 +8,6 @@ export default {
   components: {
     Auth,
   },
+  middleware: ['checkUser'],
 }
 </script>
