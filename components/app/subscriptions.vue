@@ -13,6 +13,7 @@
 
 <script>
 import Plans from '~/components/common/changePlan.vue'
+import { mapActions } from 'vuex'
 export default {
   props: {
     app: Object,
@@ -33,6 +34,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setLoader: 'component/setLoader',
+    }),
     async GET_subscriptionByID(id) {
       try {
         const response = await this.$axios.$get(`api/v1/subscriptions/${id}/`)
@@ -50,8 +54,10 @@ export default {
       this.loading = false
     },
     async changeCurrentPlan(planId, appId, active = true, subscriptionId) {
+      this.setLoader(true)
       const body = { plan: planId, app: appId, active }
       const response = await this.PATCH_currentPlan(body, subscriptionId)
+      this.setLoader(false)
       if (response) {
         this.subscription = response
         return true
@@ -69,10 +75,54 @@ export default {
         console.log(error.response)
       }
     },
+    async POST_plan(body) {
+      try {
+        const response = await this.$axios.$post(`api/v1/subscriptions/`, body)
+        return response
+      } catch (error) {
+        console.log(error.response)
+      }
+    },
+    async subscribeToPlan(planId, appId) {
+      const body = {
+        plan: planId,
+        app: appId,
+        active: true,
+      }
+
+      this.$swal
+        .fire({
+          title: 'Are you subscribing to a plan?',
+          text: 'The subscription will be active immediately!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, subscribe!',
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            this.setLoader(true)
+            const response = await this.POST_plan(body)
+            this.setLoader(false)
+            if (response) {
+              this.subscription = response
+              this.$swal.fire(
+                'Subscribed!',
+                'Your subscription is now active.',
+                'success'
+              )
+            } else {
+              this.$swal.fire('Sorry!', 'Subscription failed.', 'error')
+            }
+          }
+        })
+    },
   },
   provide() {
     return {
       changeCurrentPlan: this.changeCurrentPlan,
+      subscribeToPlan: this.subscribeToPlan,
     }
   },
 }

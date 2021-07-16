@@ -40,12 +40,12 @@
     </div> -->
     <div class="p-1">
       <div class="uppercase text-xs text-blue-400">Domain name</div>
-      <div class="flex-auto">{{ app.domain_name }}</div>
+      <div class="flex-auto">{{ app.domain_name ? app.domain_name : '-' }}</div>
     </div>
     <div class="p-1">
       <div class="uppercase text-xs text-blue-400">subscription</div>
       <div class="flex-auto">
-        {{ app.subscription ? app.subscription : 'NONE' }}
+        {{ app.subscription ? 'YES' : 'NONE' }}
       </div>
     </div>
     <div class="p-1">
@@ -77,7 +77,7 @@ export default {
   methods: {
     timeAgo(date) {
       if (date) {
-        return moment(date, 'YYYYMMDD').fromNow()
+        return moment(date).format('MMMM Do YYYY, h:mm:ss a')
       }
       return '-'
     },

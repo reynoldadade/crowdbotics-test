@@ -25,11 +25,28 @@
             <button
               type="button"
               class="p-1 rounded bg-blue-500 hover:bg-green-500 text-white"
-              v-if="plan.id !== subscription.plan"
+              v-if="
+                (plan.id !== subscription.plan &&
+                  subscription.plan !== undefined) ||
+                null
+              "
               @click="changePlan(plan.id, appId, true, subscription.id)"
+            >
+              Change Plan
+            </button>
+            <button
+              type="button"
+              class="p-1 rounded bg-blue-500 hover:bg-green-500 text-white"
+              v-else-if="
+                (plan.id !== subscription.plan &&
+                  subscription.plan === undefined) ||
+                null
+              "
+              @click="subscribeToPlan(plan.id, appId)"
             >
               Subscribe
             </button>
+
             <div v-else>
               <div class="text-sm p-1">
                 {{
@@ -78,7 +95,7 @@ export default {
     appId: Number,
     subscription: Object,
   },
-  inject: ['changeCurrentPlan'],
+  inject: ['changeCurrentPlan', 'subscribeToPlan'],
   methods: {
     changePlan(planId, appId, active, subscriptionId) {
       this.$swal
